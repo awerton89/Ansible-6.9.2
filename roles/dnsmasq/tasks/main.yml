@@ -1,0 +1,36 @@
+---
+# tasks file for dnsmasq
+- name: Update the apt package index in Ubuntu 20.04 server
+  become: yes
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: This command will disable default system dns
+  ansible.builtin.shell:
+    cmd: systemctl disable --now systemd-resolved
+
+- name: Install dnsmasq server on Ubuntu 20.04 server
+  become: yes
+  package:
+    name: dnsmasq
+    state: latest
+ 
+- name: add config file for DNS server dnsmasq
+  become: yes
+  template:
+    src: /etc/ansible/roles/dnsmasq/templates/dnsmasq.j2
+    dest: /etc/dnsmasq.conf
+
+- name: add config file for DNS server dnsmasq
+  become: yes
+  template:
+    src: /etc/ansible/roles/dnsmasq/templates/resolv.j2
+    dest: /etc/resolv.conf
+
+- name: dnsmasq restart
+  become: yes
+  ansible.builtin.systemd:
+    name: dnsmasq
+    state: restarted
+    enabled: yes
