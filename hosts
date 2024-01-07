@@ -1,0 +1,5 @@
+[my]
+localhosts ansible_host=127.0.0.1
+
+[servers]
+devops1 ansible_host=192.168.200.110 ansible_user=odmin ansible_pass=Ndgfgjy2022 ansible_ssh_private_key_file=/root/.ssh/odmin
